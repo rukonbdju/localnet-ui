@@ -1,7 +1,3 @@
-from pathlib import Path
-
-# Define the README.md content
-readme_content = """
 # 🌐 LocalNet  
 A hyperlocal community platform that connects neighbors to share posts, events, services, and real-time messages — all based on location.
 
@@ -49,18 +45,6 @@ A hyperlocal community platform that connects neighbors to share posts, events, 
 |------------|---------------|----------|----------|------------|
 | React (Next.js) | Node.js (Express) | MongoDB  | Socket.IO | Mapbox or Google Maps |
 | Tailwind CSS | JWT Auth      | Mongoose | Redis (optional) | 2dsphere Index |
-
----
-
-## 📁 Project Structure
-
-/localnet  
-├── client (Next.js frontend)  
-├── server (Express backend API)  
-│   ├── models (Mongoose schemas)  
-│   ├── routes (Auth, Posts, Chat...)  
-│   └── sockets (Socket.IO handlers)  
-└── shared (types & utils)
 
 ---
 
