@@ -1,8 +1,8 @@
 import { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import LoginForm from "./_components/LoginForm";
-import LoginWithGoogle from "./_components/LoginWithGoogle";
+import LoginForm from "./components/LoginForm";
+import LoginWithGoogle from "./components/LoginWithGoogle";
 
 export const metadata: Metadata = {
   title: "Login",
@@ -14,7 +14,7 @@ export default function Login() {
       <div className=" bg-white dark:bg-gray-900/50 rounded-xl max-w-xl mx-auto p-8 shadow-2xl" >
         <header className="mb-6">
           <div className="flex items-center justify-center mb-4">
-            <Image src={'/logo.png'} alt="logo" width={48} height={48} />
+            <Image src={'/logo.png'} alt="logo" width={32} height={32} />
           </div>
           <h2 className="text-2xl font-semibold text-center">Welcome back!</h2>
         </header>

@@ -4,13 +4,13 @@ import Link from "next/link";
 const LoginForm = () => {
     return (
         <form className="flex flex-col gap-4 max-w-md mx-auto">
-            <div className="border-2 border-gray-400 rounded-xl flex items-center focus-within:border-blue-500">
+            <div className="border border-gray-400 rounded-xl flex items-center focus-within:border-blue-500">
                 <span className="inline-block px-2">
                     <EnvelopeIcon className='size-5' />
                 </span>
                 <input type="text" className="border-0 outline-0 py-2 w-full" placeholder="Enter email" />
             </div>
-            <div className="border-2 border-gray-400 rounded-xl flex items-center focus-within:border-blue-500">
+            <div className="border border-gray-400 rounded-xl flex items-center focus-within:border-blue-500">
                 <span className="inline-block px-2">
                     <LockClosedIcon className='size-5' />
                 </span>

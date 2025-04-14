@@ -1,20 +1,13 @@
 'use client';
 
+import { Error, User } from "@/types";
 import { EnvelopeIcon, LockClosedIcon, UserIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { useState } from "react";
 
-interface UserFormData {
-    name: string;
-    email: string;
-    password: string;
-}
-interface Error {
-    message: string | null;
-    code: number | null;
-}
+
 
 const RegisterForm = () => {
-    const [formData, setFormData] = useState<UserFormData>({ name: '', email: '', password: '' });
+    const [formData, setFormData] = useState<User>({ name: '', email: '', password: '', password2: '' });
     const [loading, setLoading] = useState<boolean>(false);
     const [error, setError] = useState<Error>({ message: null, code: null });
 
@@ -49,7 +42,7 @@ const RegisterForm = () => {
                     </div>
                 )
             }
-            <div className="border-2 border-gray-400 rounded-xl flex items-center focus-within:border-blue-500">
+            <div className="border border-gray-400 rounded-xl flex items-center focus-within:border-blue-500">
                 <span className="inline-block px-2">
                     <UserIcon className='size-5' />
                 </span>
@@ -62,7 +55,7 @@ const RegisterForm = () => {
                     required
                 />
             </div>
-            <div className="border-2 border-gray-400 rounded-xl flex items-center focus-within:border-blue-500">
+            <div className="border border-gray-400 rounded-xl flex items-center focus-within:border-blue-500">
                 <span className="inline-block px-2">
                     <EnvelopeIcon className='size-5' />
                 </span>
@@ -76,7 +69,7 @@ const RegisterForm = () => {
                 />
             </div>
             <div>
-                <div className="border-2 border-gray-400 rounded-xl flex items-center focus-within:border-blue-500">
+                <div className="border border-gray-400 rounded-xl flex items-center focus-within:border-blue-500">
                     <span className="inline-block px-2">
                         <LockClosedIcon className='size-5' />
                     </span>
@@ -88,6 +81,24 @@ const RegisterForm = () => {
                         type="password"
                         className="border-0 outline-0 py-2 w-full"
                         placeholder="Enter password"
+                        required
+                    />
+                </div>
+                <p></p>
+            </div>
+            <div>
+                <div className="border border-gray-400 rounded-xl flex items-center focus-within:border-blue-500">
+                    <span className="inline-block px-2">
+                        <LockClosedIcon className='size-5' />
+                    </span>
+                    <input
+                        name="password2"
+                        onChange={onInputChange}
+                        minLength={6}
+                        title="Password must match"
+                        type="password"
+                        className="border-0 outline-0 py-2 w-full"
+                        placeholder="Confirm password"
                         required
                     />
                 </div>
