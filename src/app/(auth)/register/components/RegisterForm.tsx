@@ -1,18 +1,34 @@
 'use client';
-
-import { Error, User } from "@/types";
-import { EnvelopeIcon, LockClosedIcon, UserIcon, XMarkIcon } from "@heroicons/react/24/outline";
+import dynamic from "next/dynamic";
 import { useState } from "react";
+import { AddressInfo, Error, LatLng, User } from "@/types";
+import { ChevronDownIcon, EnvelopeIcon, LockClosedIcon, UserIcon, XMarkIcon } from "@heroicons/react/24/outline";
+import { Disclosure, DisclosureButton, DisclosurePanel } from "@headlessui/react";
+
+const SelectLocationMap = dynamic(() => import('@/components/geolocation/SelectLocation'), {
+    ssr: false,
+});
 
 
 
 const RegisterForm = () => {
+    const [position, setPosition] = useState<LatLng>({ lat: 23.803994606998913, lng: 90.4138565346701 });
+    const [mapCenter, setMapCenter] = useState<LatLng>({ lat: 23.803994606998913, lng: 90.4138565346701 });
+    const [address, setAddress] = useState<AddressInfo | null>(null);
     const [formData, setFormData] = useState<User>({ name: '', email: '', password: '', password2: '' });
     const [loading, setLoading] = useState<boolean>(false);
     const [error, setError] = useState<Error>({ message: null, code: null });
 
     //handle input change
     const onInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (e.target.name === 'password2') {
+            if (e.target.value !== formData.password) {
+                setError({ message: 'Password does not match', code: 'password2' });
+                return;
+            } else {
+                setError({ message: null, code: null });
+            }
+        }
         setFormData({ ...formData, [e.target.name]: e.target.value });
     }
     //handle form submission
@@ -92,6 +108,7 @@ const RegisterForm = () => {
                         <LockClosedIcon className='size-5' />
                     </span>
                     <input
+                        disabled={formData.password.length < 6}
                         name="password2"
                         onChange={onInputChange}
                         minLength={6}
@@ -104,6 +121,33 @@ const RegisterForm = () => {
                 </div>
                 <p></p>
             </div>
+            <div>
+                {address && (
+                    <div className="border border-gray-400 p-4 rounded-xl">
+                        <p>Current location:{loading && " Location detecting..."}</p>
+                        {!loading && <p className='text-sm'>{address.address}</p>}
+                    </div>
+                )}
+            </div>
+            <div>
+                <Disclosure>
+                    <DisclosureButton as="button" className="flex flex-row items-center justify-between w-full border border-gray-400 px-3 py-2 focus-within:border-blue-500 rounded-xl">
+                        <span>Select your location from map</span>
+                        <ChevronDownIcon className="size-5 fill-white/60 group-data-[hover]:fill-white/50 group-data-[open]:rotate-180" />
+                    </DisclosureButton>
+                    <DisclosurePanel>
+                        <SelectLocationMap
+                            position={position}
+                            setPosition={setPosition}
+                            mapCenter={mapCenter}
+                            setMapCenter={setMapCenter}
+                            address={address}
+                            setAddress={setAddress}
+                        />
+                    </DisclosurePanel>
+                </Disclosure>
+            </div>
+
             <div>
                 <button
                     disabled={loading}
