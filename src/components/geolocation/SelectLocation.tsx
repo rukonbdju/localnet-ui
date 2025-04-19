@@ -1,6 +1,5 @@
 'use client';
 
-import { useEffect } from 'react';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 import { MapContainer, TileLayer, Marker, useMapEvents } from 'react-leaflet';
@@ -19,17 +18,15 @@ L.Icon.Default.mergeOptions({
 });
 
 type SelectLocationProps = {
-    position: LatLng;
-    setPosition: (coords: LatLng) => void;
-    mapCenter: LatLng;
-    setMapCenter: (coords: LatLng) => void;
-    address: AddressInfo | null;
-    setAddress: (address: AddressInfo | null) => void;
+    geolocation: LatLng;
+    setGeolocation: (coords: LatLng) => void;
+    setLocation: (address: AddressInfo | null) => void;
 };
 
 
 // ✅ Map click event handler to capture coordinates
 function LocationSelector({ onSelect }: { onSelect: (coords: LatLng) => void }) {
+    console.log(useMapEvents)
     useMapEvents({
         click(e) {
             onSelect({ lat: e.latlng.lat, lng: e.latlng.lng });
@@ -39,40 +36,25 @@ function LocationSelector({ onSelect }: { onSelect: (coords: LatLng) => void }) 
 }
 
 // ✅ Main component
-function SelectLocationMap({ position, setPosition, mapCenter, setMapCenter, setAddress }: SelectLocationProps) {
+function SelectLocation({ geolocation, setGeolocation, setLocation }: SelectLocationProps) {
     const handleSelect = async ({ lat, lng }: LatLng) => {
-        setPosition({ lat, lng });
+        setGeolocation({ lat, lng });
         // Reverse geocode the coordinates to get the address
         const addr = await reverseGeocode(lat, lng);
-        setAddress(addr);
-        setMapCenter({ lat, lng });
-
+        setLocation(addr);
     };
-    useEffect(() => {
-        navigator.geolocation.getCurrentPosition(async (position) => {
-            console.log('loading position...');
-            const { latitude, longitude } = position.coords;
-            setMapCenter({ lat: latitude, lng: longitude });
-            setPosition({ lat: latitude, lng: longitude });
-            // Reverse geocode the coordinates to get the address
-            const addr = await reverseGeocode(latitude, longitude);
-            setAddress(addr);
-        }, (error) => {
-            console.warn('Error getting location:', error.message);
-            setAddress(null);
-        })
-    }, [setAddress, setMapCenter, setPosition]);
+
 
     return (
         <div className="space-y-3">
             <div>
                 <div className="h-[250px] sm:h-[400px]  w-full rounded-xl overflow-hidden shadow">
-                    <MapContainer center={[mapCenter.lat, mapCenter.lng]} zoom={12} style={{ height: '100%', width: '100%' }}>
+                    <MapContainer center={[geolocation.lat, geolocation.lng]} zoom={12} style={{ height: '100%', width: '100%' }}>
                         <TileLayer
                             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                         />
                         <LocationSelector onSelect={handleSelect} />
-                        <Marker position={position} />
+                        <Marker position={geolocation} />
                     </MapContainer>
                 </div>
             </div>
@@ -80,4 +62,4 @@ function SelectLocationMap({ position, setPosition, mapCenter, setMapCenter, set
     );
 }
 
-export default SelectLocationMap;
+export default SelectLocation;

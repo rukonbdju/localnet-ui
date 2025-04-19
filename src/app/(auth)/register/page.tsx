@@ -10,14 +10,12 @@ export const metadata: Metadata = {
 
 export default function Register() {
   return (
-    <div className="w-full p-5" >
-      <div className="bg-white rounded-xl max-w-xl mx-auto p-8 shadow-2xl" >
-        <header className="mb-6">
-          <Logo />
-          <h2 className="text-2xl font-semibold text-center">Create New Account</h2>
-        </header>
+    <div className="w-full p-4" >
+      <div className="bg-white rounded-xl max-w-xl mx-auto p-4 md:p-8 shadow-2xl" >
+        <Logo />
+        <h2 className="text-xl font-semibold text-center my-4">Create New Account</h2>
         <RegisterWithGoogle />
-        <div className="flex flex-row items-center justify-center gap-2 my-6 max-w-md mx-auto">
+        <div className="flex flex-row items-center justify-center gap-2 my-4 max-w-md mx-auto">
           <div className="h-px bg-gray-300 w-full"></div>
           <div>OR</div>
           <div className="h-px bg-gray-300 w-full"></div>

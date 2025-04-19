@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "../globals.css";
 
 import { Nunito } from 'next/font/google'
+import Navbar from "@/components/navbar";
 
 const nunito = Nunito({
   subsets: ['latin'],
@@ -25,6 +26,9 @@ export default function RootLayout({
   return (
     <html lang="en" className={nunito.variable}>
       <body>
+        <header className="sticky top-0 z-40">
+          <Navbar />
+        </header>
         {children}
       </body>
     </html>

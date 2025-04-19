@@ -12,3 +12,5 @@ export type AddressInfo = {
     countryCode?: string;
     suburb?: string;
 };
+
+export type ApiError = Error & { code?: number };

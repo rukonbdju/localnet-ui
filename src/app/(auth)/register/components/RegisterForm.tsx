@@ -1,29 +1,26 @@
 'use client';
-import dynamic from "next/dynamic";
 import { useState } from "react";
-import { AddressInfo, Error, LatLng, User } from "@/types";
-import { ChevronDownIcon, EnvelopeIcon, LockClosedIcon, UserIcon, XMarkIcon } from "@heroicons/react/24/outline";
-import { Disclosure, DisclosureButton, DisclosurePanel } from "@headlessui/react";
-
-const SelectLocationMap = dynamic(() => import('@/components/geolocation/SelectLocation'), {
-    ssr: false,
-});
-
-
+import { AddressInfo, LatLng, User } from "@/types";
+import { EnvelopeIcon, LockClosedIcon, MapPinIcon, UserIcon, XMarkIcon } from "@heroicons/react/24/outline";
+import AddressModal from "./AddressModal";
+import { fetcher } from "@/api/api";
+import { useRouter } from "next/navigation";
+type ApiError = Error & { code?: number };
 
 const RegisterForm = () => {
-    const [position, setPosition] = useState<LatLng>({ lat: 23.803994606998913, lng: 90.4138565346701 });
-    const [mapCenter, setMapCenter] = useState<LatLng>({ lat: 23.803994606998913, lng: 90.4138565346701 });
-    const [address, setAddress] = useState<AddressInfo | null>(null);
-    const [formData, setFormData] = useState<User>({ name: '', email: '', password: '', password2: '' });
+    const router = useRouter()
+    const [modalOpen, setModalOpen] = useState<boolean>(false)
+    const [location, setLocation] = useState<AddressInfo | null>(null)
+    const [geolocation, setGeolocation] = useState<LatLng>({ lat: 23.803994606998913, lng: 90.4138565346701 })
+    const [formData, setFormData] = useState<User>({ name: '', email: '', password: '', password2: '', });
     const [loading, setLoading] = useState<boolean>(false);
-    const [error, setError] = useState<Error>({ message: null, code: null });
+    const [error, setError] = useState<{ message: string | null, code?: number | null }>({ message: null, code: null });
 
     //handle input change
     const onInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.name === 'password2') {
             if (e.target.value !== formData.password) {
-                setError({ message: 'Password does not match', code: 'password2' });
+                setError({ message: 'Password does not match' });
                 return;
             } else {
                 setError({ message: null, code: null });
@@ -36,9 +33,16 @@ const RegisterForm = () => {
         e.preventDefault();
         try {
             setLoading(true);
-            console.log(formData);
+            const userData = { ...location, ...formData, geolocation }
+            const registeredUser = await fetcher('/auth/signup', { method: "POST", body: JSON.stringify(userData) })
+            if (registeredUser.success) {
+                router.push('/login')
+            }
+            console.log(registeredUser);
         } catch (err) {
-            console.log(err);
+            const error = err as ApiError;
+            setError({ message: error.message })
+            console.log(error.stack)
         } finally {
             setLoading(false);
         }
@@ -66,7 +70,7 @@ const RegisterForm = () => {
                     name="name"
                     onChange={onInputChange}
                     type="text"
-                    className="border-0 outline-0 py-2 w-full"
+                    className="border-0 outline-0 py-2 pe-2 w-full"
                     placeholder="Enter name"
                     required
                 />
@@ -79,7 +83,7 @@ const RegisterForm = () => {
                     name="email"
                     onChange={onInputChange}
                     type="text"
-                    className="border-0 outline-0 py-2 w-full"
+                    className="border-0 outline-0 py-2 pe-2 w-full"
                     placeholder="Enter email"
                     required
                 />
@@ -95,7 +99,7 @@ const RegisterForm = () => {
                         minLength={6}
                         title="Password must be at least 6 characters long"
                         type="password"
-                        className="border-0 outline-0 py-2 w-full"
+                        className="border-0 outline-0 py-2 pe-2 w-full"
                         placeholder="Enter password"
                         required
                     />
@@ -114,40 +118,20 @@ const RegisterForm = () => {
                         minLength={6}
                         title="Password must match"
                         type="password"
-                        className="border-0 outline-0 py-2 w-full"
+                        className="border-0 outline-0 py-2 pe-2 w-full"
                         placeholder="Confirm password"
                         required
                     />
                 </div>
                 <p></p>
             </div>
-            <div>
-                {address && (
-                    <div className="border border-gray-400 p-4 rounded-xl">
-                        <p>Current location:{loading && " Location detecting..."}</p>
-                        {!loading && <p className='text-sm'>{address.address}</p>}
-                    </div>
-                )}
-            </div>
-            <div>
-                <Disclosure>
-                    <DisclosureButton as="button" className="flex flex-row items-center justify-between w-full border border-gray-400 px-3 py-2 focus-within:border-blue-500 rounded-xl">
-                        <span>Select your location from map</span>
-                        <ChevronDownIcon className="size-5 fill-white/60 group-data-[hover]:fill-white/50 group-data-[open]:rotate-180" />
-                    </DisclosureButton>
-                    <DisclosurePanel>
-                        <SelectLocationMap
-                            position={position}
-                            setPosition={setPosition}
-                            mapCenter={mapCenter}
-                            setMapCenter={setMapCenter}
-                            address={address}
-                            setAddress={setAddress}
-                        />
-                    </DisclosurePanel>
-                </Disclosure>
-            </div>
+            <div onClick={() => setModalOpen(true)} className="border border-gray-400 rounded-xl flex hover:border-blue-500 cursor-pointer">
+                <span className="inline-block p-2">
+                    <MapPinIcon className='size-5' />
+                </span>
+                <p className="py-2 pe-2">{location?.address ? location.address : <span className="text-gray-500 font-light">Address</span>}</p>
 
+            </div>
             <div>
                 <button
                     disabled={loading}
@@ -156,6 +140,14 @@ const RegisterForm = () => {
                     Register
                 </button>
             </div>
+            <AddressModal
+                isOpen={modalOpen}
+                setIsOpen={setModalOpen}
+                location={location}
+                setLocation={setLocation}
+                geolocation={geolocation}
+                setGeolocation={setGeolocation}
+            />
         </form>
     )
 }
