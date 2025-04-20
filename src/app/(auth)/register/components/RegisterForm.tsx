@@ -6,6 +6,7 @@ import AddressModal from "./AddressModal";
 import { fetcher } from "@/api/api";
 import { useRouter } from "next/navigation";
 type ApiError = Error & { code?: number };
+type RegisteredUser = { success: boolean; user: object; accessToken: string; }
 
 const RegisterForm = () => {
     const router = useRouter()
@@ -34,9 +35,15 @@ const RegisterForm = () => {
         try {
             setLoading(true);
             const userData = { ...location, ...formData, geolocation }
-            const registeredUser = await fetcher('/auth/signup', { method: "POST", body: JSON.stringify(userData) })
+            const registeredUser: RegisteredUser = await fetcher('/auth/signup', {
+                method: "POST",
+                body: JSON.stringify(userData)
+            })
             if (registeredUser.success) {
-                router.push('/login')
+                const expires = new Date().getTime() + 30 * 1000
+                const cookie = `_localNet_access_token_=${registeredUser.accessToken};${expires};path:'/' `
+                document.cookie = cookie;
+                router.push('/')
             }
             console.log(registeredUser);
         } catch (err) {

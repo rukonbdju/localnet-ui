@@ -3,6 +3,8 @@ import "../globals.css";
 
 import { Nunito } from 'next/font/google'
 import Navbar from "@/components/navbar";
+import StoreProvider from "@/lib/StoreProvider";
+import AuthWrapper from "@/components/AuthWrapper/AuthWrapper";
 
 const nunito = Nunito({
   subsets: ['latin'],
@@ -26,10 +28,14 @@ export default function RootLayout({
   return (
     <html lang="en" className={nunito.variable}>
       <body>
-        <header className="sticky top-0 z-40">
-          <Navbar />
-        </header>
-        {children}
+        <StoreProvider>
+          <AuthWrapper>
+            <header className="sticky top-0 z-40">
+              <Navbar />
+            </header>
+            {children}
+          </AuthWrapper>
+        </StoreProvider>
       </body>
     </html>
   );

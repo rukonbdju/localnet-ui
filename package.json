@@ -11,8 +11,9 @@
   "dependencies": {
     "@headlessui/react": "^2.2.2",
     "@heroicons/react": "^2.2.0",
-    "@reduxjs/toolkit": "^2.6.1",
+    "@reduxjs/toolkit": "^2.7.0",
     "@tailwindcss/postcss": "^4.1.3",
+    "@types/react-redux": "^7.1.34",
     "daisyui": "^5.0.19",
     "leaflet": "^1.9.4",
     "next": "15.3.0",
