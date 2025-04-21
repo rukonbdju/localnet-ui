@@ -1,11 +1,18 @@
 'use client';
 import { fetcher } from "@/api/api";
+import { setUser } from "@/lib/features/auth/authSlice";
+import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { ApiError } from "@/types";
 import { EnvelopeIcon, LockClosedIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 const LoginForm = () => {
+    const user = useAppSelector((state) => state.auth)
+    const dispatch = useAppDispatch()
+    const router = useRouter()
+    console.log(user)
     const [formData, setFormData] = useState<{ email: string, password: string }>({ email: '', password: '' })
     const [loading, setLoading] = useState<boolean>(false);
     const [error, setError] = useState<{ message: string | null, code?: number | null }>({ message: null, code: null });
@@ -19,8 +26,10 @@ const LoginForm = () => {
         try {
             setLoading(true)
             const credentials = await fetcher('/auth/signin', { method: "POST", body: JSON.stringify(formData) })
-            if (!credentials?.success) {
-
+            console.log(credentials)
+            if (credentials?.success) {
+                dispatch(setUser(credentials))
+                router.push('/')
             }
         } catch (err) {
             const error = err as ApiError
