@@ -9,7 +9,7 @@ interface AuthInfo {
 const initialState: AuthInfo = {
     user: null,
     isAuthenticated: false,
-    isLoading: false,
+    isLoading: true,
     error: null,
 }
 export const getLoggedInUser = createAsyncThunk('auth/me', async () => {

@@ -30,7 +30,7 @@ export default function RootLayout({
       <body>
         <StoreProvider>
           <AuthWrapper>
-            <header className="sticky top-0 z-40">
+            <header className="sticky top-0 z-40 bg-white shadow">
               <Navbar />
             </header>
             {children}
