@@ -1,6 +1,7 @@
 import { AlertIcon, EventIcon } from "@/components/icons/Icons";
 import Container from "@/components/shared/Container";
 import Image from "next/image";
+import Feed from "@/components/feed/Feed"; // Import the Feed component
 
 export default function Home() {
   return (
@@ -50,6 +51,7 @@ export default function Home() {
           <button className="rounded px-4 py-1 bg-blue-200 hover:bg-blue-300">Country</button>
         </div>
       </Container>
+      <Feed /> {/* Add the Feed component here */}
     </div>
   );
 }
