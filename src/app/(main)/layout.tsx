@@ -27,13 +27,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={nunito.variable}>
-      <body>
+      <body suppressHydrationWarning={true}>
         <StoreProvider>
           <AuthWrapper>
-            <header className="sticky top-0 z-40 bg-white shadow">
+            <header className="sticky top-0 z-40 bg-white shadow px-2">
               <Navbar />
             </header>
-            {children}
+            <main className="px-2">{children}</main>
           </AuthWrapper>
         </StoreProvider>
       </body>

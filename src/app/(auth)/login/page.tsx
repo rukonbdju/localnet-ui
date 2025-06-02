@@ -12,16 +12,16 @@ export default function Login() {
   return (
     <div className="w-screen h-screen  content-center p-4" >
       <div className=" bg-white rounded-xl max-w-xl mx-auto p-8 shadow-2xl" >
-        <header className="mb-6">
+        <header className="mb-4">
           <Logo />
-          <h2 className="text-2xl font-semibold text-center">Welcome back!</h2>
+          <h2 className="text-2xl font-semibold text-center mt-2">Welcome back!</h2>
         </header>
-        <LoginWithGoogle />
-        <div className="flex flex-row items-center justify-center gap-2 my-6 max-w-md mx-auto">
-          <div className="h-px bg-gray-300 w-full"></div>
-          <div>OR</div>
-          <div className="h-px bg-gray-300 w-full"></div>
-        </div>
+        {/* <LoginWithGoogle /> */}
+        <span className="flex items-center max-w-md mx-auto mb-4">
+          <span className="h-px flex-1 bg-gray-300"></span>
+          <span className="shrink-0 px-4 text-gray-900">Login</span>
+          <span className="h-px flex-1 bg-gray-300"></span>
+        </span>
         <LoginForm />
       </div>
       <div className="bg-white rounded-xl max-w-xl mx-auto p-4 mt-5 flex flex-row justify-between items-center shadow-2xl">
