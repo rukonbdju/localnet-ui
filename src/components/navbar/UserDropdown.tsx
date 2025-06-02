@@ -6,16 +6,16 @@ import Image from "next/image";
 
 const UserDropdown = () => {
     return (
-        <div className="flex justify-end">
+        <div className="flex justify-end items-center">
             <Menu as="div" className="relative">
                 <div>
-                    <MenuButton className="relative flex flex-col rounded-full text-sm  focus:outline-hidden">
+                    <MenuButton className="relative flex flex-col items-center rounded-full text-sm  focus:outline-hidden">
                         <span className="absolute " />
                         <span className="sr-only">Open user menu</span>
                         <span className="bg-blue-500 size-6 rounded-full ring">
                             <Image src={"/avater-male.jpg"} height={24} width={24} alt="avatar" className="size-full rounded-full" />
                         </span>
-                        <span className="hidden md:flex flex-row items-center">Me <DropDownIcon className="size-4" /></span>
+                        <span className="hidden md:flex flex-row items-center justify-between">Me <DropDownIcon className="size-4" /></span>
                     </MenuButton>
                 </div>
                 <MenuItems

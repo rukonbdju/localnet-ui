@@ -47,11 +47,23 @@ const AddressModal = ({ isOpen, setIsOpen, geolocation, setGeolocation, location
                         className="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all data-closed:translate-y-4 data-closed:opacity-0 data-enter:duration-300 data-enter:ease-out data-leave:duration-200 data-leave:ease-in sm:my-8 sm:w-full sm:max-w-lg data-closed:sm:translate-y-0 data-closed:sm:scale-95"
                     >
                         <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                            <div className='flex justify-between'>
+                                <h1>Address</h1>
+                                <button className="btn btn-ghost">Ghost</button>
+                            </div>
                             {location?.address && <p className='border border-gray-400 p-2 rounded-2xl mb-2'>{location?.address}</p>}
                             <p className='text-sm'>Find your location and select</p>
                             <SelectLocation geolocation={geolocation} setGeolocation={setGeolocation} setLocation={setLocation} />
                         </div>
                         <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
+                            <button
+                                disabled={!location?.address}
+                                type="button"
+                                onClick={() => setIsOpen(false)}
+                                className="inline-flex w-full justify-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-blue-500 sm:ml-3 sm:w-auto disabled:bg-blue-300"
+                            >
+                                Cancel
+                            </button>
                             <button
                                 disabled={!location?.address}
                                 type="button"

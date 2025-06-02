@@ -71,7 +71,9 @@ const LoginForm = () => {
                 >
                     Login
                 </button>
-                <Link href='reset-password' className="text-sm mt-2 hover:underline hover:text-blue-700">Forgot password?</Link>
+                <div className="flex justify-end">
+                    <Link href='reset-password' className="text-sm mt-2 hover:underline hover:text-blue-700">Forgot password?</Link>
+                </div>
             </div>
         </form>
     )
